@@ -15,21 +15,30 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Get existing users from localStorage
+    let users = [];
     try {
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        alert(data.message || 'Registration failed');
-        return;
-      }
-      alert('Account created. You can now log in.');
-      window.location.href = 'login-page.html';
+      const stored = localStorage.getItem('winaBwanguUsers');
+      users = stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      users = [];
+    }
+
+    // Check if username already exists
+    if (users.find(u => u.username === username)) {
+      alert('Username already exists. Please choose a different username.');
+      return;
+    }
+
+    // Add new user (in production, password should be hashed)
+    users.push({ username, password });
+    
+    try {
+      localStorage.setItem('winaBwanguUsers', JSON.stringify(users));
+      alert('Account created successfully! You can now log in.');
+      window.location.href = 'index.html';
     } catch (err) {
-      alert('Network error. Please try again.');
+      alert('Failed to create account. Please try again.');
     }
   });
 });

@@ -27,23 +27,25 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Get users from localStorage
+    let users = [];
     try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        alert(data.message || 'Invalid username or password. Please check or create an account.');
-        return;
-      }
-    } catch (err) {
-      alert('Network error. Please try again.');
+      const stored = localStorage.getItem('winaBwanguUsers');
+      users = stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      users = [];
+    }
+
+    // Validate credentials
+    const user = users.find(u => u.username === username && u.password === password);
+    if (!user) {
+      alert('Invalid username or password. Please check or create an account.');
       return;
     }
 
+    // Store current user session
     try {
+      localStorage.setItem('winaBwanguCurrentUser', username);
       if (rememberInput?.checked) {
         localStorage.setItem('rememberedUser', username);
       } else {

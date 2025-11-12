@@ -162,21 +162,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadTransactions() {
     try {
-      const res = await fetch('/api/transactions');
-      const data = await res.json();
-      if (!res.ok || !data.ok || !Array.isArray(data.data)) return;
+      // Load from localStorage instead of backend
+      const stored = localStorage.getItem('winaBwanguTransactions');
+      const data = stored ? JSON.parse(stored) : [];
+      
       // Reset aggregates
       transactions = [];
       boothRevenues = { Wina1: 0, Wina2: 0, Wina3: 0, Wina4: 0, Wina5: 0, Wina6: 0 };
       serviceTotals = { "Airtel Money": 0, "MTN Money": 0, "Zamtel Money": 0, "Zanaco": 0, "FNB": 0 };
       serviceTaxRevenue = { "Airtel Money": 0, "MTN Money": 0, "Zamtel Money": 0, "Zanaco": 0, "FNB": 0 };
       serviceFrequencies = {};
-      for (const r of data.data) {
-        const id = r.TransactionID;
-        const booth = r.MobileBooth;
-        const service = r.Service;
-        const amount = Number(r.TransactionAmount) || 0;
-        const tax = amount * (Number(r.RevenuePerKwacha) || 0.05);
+      
+      for (const r of data) {
+        const id = r.id;
+        const booth = r.booth;
+        const service = r.service;
+        const amount = Number(r.amount) || 0;
+        const tax = Number(r.tax) || 0;
         transactions.push({ id, booth, service, amount, tax });
         if (boothRevenues[booth] !== undefined) boothRevenues[booth] += amount;
         if (serviceTotals[service] !== undefined) serviceTotals[service] += amount;
@@ -283,27 +285,30 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Create transaction in backend first
-    let id = '';
+    // Create transaction and save to localStorage
+    const id = generateTransactionId();
+    const tax = calculateTax(amount);
+    
     try {
-      const res = await fetch('/api/transactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          booth,
-          service,
-          amount,
-          location: boothLocations[booth]
-        })
+      // Get existing transactions
+      const stored = localStorage.getItem('winaBwanguTransactions');
+      const storedTransactions = stored ? JSON.parse(stored) : [];
+      
+      // Add new transaction
+      storedTransactions.push({
+        id,
+        booth,
+        service,
+        amount,
+        tax,
+        location: boothLocations[booth],
+        timestamp: new Date().toISOString()
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        alert(data.message || 'Failed to save transaction.');
-        return;
-      }
-      id = data.id || generateTransactionId();
+      
+      // Save back to localStorage
+      localStorage.setItem('winaBwanguTransactions', JSON.stringify(storedTransactions));
     } catch (_) {
-      alert('Network error while saving transaction.');
+      alert('Failed to save transaction. Please try again.');
       return;
     }
 
@@ -311,8 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.generatedId.style.color = COLORS.SUCCESS;
     elements.generatedId.style.fontWeight = "bold";
 
-    // Calculate tax
-    const tax = calculateTax(amount);
+    // Calculate tax display percentage
     const taxPercent = Math.min((tax / CONFIG.TAX_THRESHOLD) * 100, 100);
     
     // Display tax bar with ARIA update

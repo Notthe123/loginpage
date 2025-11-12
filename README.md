@@ -1,10 +1,29 @@
 # Wina Bwangu FinTech Dashboard
 
-A full-stack FinTech transaction management system with:
+A FinTech transaction management system with:
 - **HTML/CSS/JavaScript** frontend with Chart.js visualization
-- **Flask** backend with RESTful APIs
-- **SQLite** database for secure data persistence
-- **User authentication** with password hashing
+- **localStorage** for client-side data persistence
+- **User authentication** system
+- **GitHub Pages** hosting support
+
+## 🌐 Live Demo
+Visit the live application: **https://notthe123.github.io/loginpage/**
+
+## GitHub Pages Deployment
+
+This application is configured to run on GitHub Pages as a static site. All data is stored locally in your browser using localStorage.
+
+### How to Deploy Your Own:
+1. Fork this repository
+2. Go to your repository Settings → Pages
+3. Under "Source", select the `main` branch
+4. Click Save
+5. Your site will be available at `https://YOUR-USERNAME.github.io/loginpage/`
+
+### Note:
+- Data is stored in browser localStorage (persists across sessions on the same browser)
+- No backend server required
+- Works entirely client-side
 
 ## Features
 - **User Management**: Register and login with secure password hashing
@@ -15,36 +34,33 @@ A full-stack FinTech transaction management system with:
 - **Monthly Limits**: Enforced transaction limits per service provider
 - **Interactive Charts**: Revenue visualization with Chart.js
 
-## Prerequisites
-- Python 3.10+ (Linux/macOS/Windows)
-
 ## Quick Start
 
-### Option 1: Using the Startup Script (Easiest)
-```bash
-./start.sh
-```
+### Option 1: Use GitHub Pages (Recommended)
+Simply visit the live site: https://notthe123.github.io/loginpage/
 
-### Option 2: Manual Setup
-
-1) **Install dependencies** (already done if using startup script)
+### Option 2: Run Locally
+1. Clone the repository:
    ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
+   git clone https://github.com/Notthe123/loginpage.git
+   cd loginpage
    ```
 
-2) **Start the server**
-   ```bash
-   source .venv/bin/activate
-   python3 app.py
-   ```
-   - Server will run on: **http://localhost:8000**
+2. Open `index.html` in your web browser:
+   - **Using Python's built-in server:**
+     ```bash
+     python3 -m http.server 8000
+     ```
+     Then visit: http://localhost:8000/
 
-3) **Open your browser**
-   - Login Page: http://localhost:8000/
-   - Dashboard: http://localhost:8000/Wina-bwangu.html
-   - Register: http://localhost:8000/register.html
+   - **Or simply open the file:**
+     - Double-click `index.html` or
+     - Right-click → Open with → Your browser
+
+3. **Access the pages:**
+   - Login Page: `index.html` or `login-page.html`
+   - Register: `register.html`
+   - Dashboard: `Wina-bwangu.html`
 
 ## Usage
 
@@ -67,48 +83,28 @@ A full-stack FinTech transaction management system with:
 - **Revenue Chart**: Visual breakdown of revenue vs. tax collection
 
 ## Data Storage
-- **Database**: SQLite (`wina_bwangu.db`) stores all transactions and users
-- **Security**: Passwords are hashed using Werkzeug's secure hashing
-- **Transactions**: Auto-generated IDs (WB0000001, WB0000002, etc.)
+- **Storage**: Browser localStorage stores all transactions and user accounts
+- **Persistence**: Data persists across browser sessions (same browser only)
+- **Security**: Data is stored locally in your browser
+- **Transactions**: Auto-generated IDs with timestamp
 - **Tax Rate**: 5% applied to all transactions
-
-## Stopping/Restarting the Server
-- Stop: press Ctrl+C in the terminal running the server.
-- If port 8000 is busy (server didn't stop cleanly), free it on Linux:
-  ```bash
-  fuser -k 8000/tcp
-  ```
-
-## Change Port (optional)
-- Run the server on a different port:
-  ```bash
-  PORT=9000 python app.py
-  ```
-- Then open: http://localhost:9000
+- **Note**: Clear browser data will delete all stored information
 
 ## Troubleshooting
 
-### Flask Not Installed
-- **Solution**: Run `pip install -r requirements.txt` after activating the virtual environment
-
-### Port Already in Use
-- **Solution**: Kill the process using port 8000:
-  ```bash
-  fuser -k 8000/tcp
-  ```
-  Or run on a different port:
-  ```bash
-  PORT=9000 python3 app.py
-  ```
-
-### API Errors / Network Errors
-- **Check**: Ensure Flask server is running
-- **Verify**: Access pages via http://localhost:8000 (not by opening HTML files directly)
-- **Database**: The app auto-creates `wina_bwangu.db` on first run
+### Data Not Saving
+- **Check**: Ensure your browser allows localStorage
+- **Solution**: Check browser settings and enable local storage
+- **Note**: Private/Incognito mode may restrict localStorage
 
 ### Chart Not Displaying
 - **Requirement**: Internet connection needed for Chart.js CDN
 - **Alternative**: Download Chart.js locally if offline access is needed
+
+### Login Issues
+- **Problem**: Can't log in after registering
+- **Solution**: Make sure you're using the exact username and password you registered with
+- **Tip**: Check browser console for errors (F12)
 
 ### Transaction Not Saving
 - **Check**: Ensure the selected service hasn't exceeded its monthly limit
@@ -122,34 +118,29 @@ A full-stack FinTech transaction management system with:
 ## Project Structure
 ```
 .
-├── app.py                 # Flask backend server
-├── wina-bwangu.js         # Transaction management JavaScript
-├── wina-bwangu1.css       # Dashboard styling
-├── Wina-bwangu.html       # Main transaction dashboard
-├── login-page.html        # User login page
+├── index.html             # Main login page (GitHub Pages entry point)
+├── login-page.html        # Alternative login page
 ├── login-page.css         # Login page styling
-├── login.js               # Login functionality
+├── login.js               # Login functionality (localStorage)
 ├── register.html          # User registration page
-├── register.js            # Registration functionality
+├── register.js            # Registration functionality (localStorage)
+├── Wina-bwangu.html       # Main transaction dashboard
+├── wina-bwangu.js         # Transaction management (localStorage)
+├── wina-bwangu1.css       # Dashboard styling
+├── WB.png                 # Logo/image asset
 ├── success.html           # Post-login success page
-├── wina_bwangu.db         # SQLite database (auto-created)
-├── requirements.txt       # Python dependencies
-├── start.sh               # Quick startup script
+├── .gitignore             # Git ignore file
 └── README.md              # This file
+
+# Legacy backend files (not used in GitHub Pages deployment)
+├── app.py                 # Flask backend (optional local server)
+├── requirements.txt       # Python dependencies
+└── start.sh               # Startup script
 ```
 
-## API Endpoints
-
-### User Management
-- `POST /api/register` - Create new user account
-- `POST /api/login` - Authenticate user
-
-### Transaction Management
-- `GET /api/transactions` - Retrieve all transactions
-- `POST /api/transactions` - Create new transaction
-
 ## Technologies Used
-- **Backend**: Flask 3.0.0, SQLite3, Werkzeug
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3
 - **Visualization**: Chart.js (CDN)
-- **Security**: Password hashing with Werkzeug
+- **Storage**: Browser localStorage API
+- **Hosting**: GitHub Pages
+- **Styling**: Custom CSS with responsive design
