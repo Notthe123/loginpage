@@ -74,7 +74,7 @@ A full-stack FinTech transaction management system with:
 
 ## Stopping/Restarting the Server
 - Stop: press Ctrl+C in the terminal running the server.
-- If port 8000 is busy (server didn’t stop cleanly), free it on Linux:
+- If port 8000 is busy (server didn't stop cleanly), free it on Linux:
   ```bash
   fuser -k 8000/tcp
   ```
