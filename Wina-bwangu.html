@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wina Bwangu Mobile Booths Transaction Management Dashboard - Manage fintech transactions across multiple mobile money providers">
+    <meta name="keywords" content="fintech, mobile money, transaction management, Zambia, Airtel, MTN, Zamtel">
+    <meta name="author" content="Wina Bwangu">
+    <title>Wina Bwangu FinTech Dashboard</title>
+    <link rel="stylesheet" href="wina-bwangu1.css">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header role="banner">
+        <h1>Wina Bwangu Mobile Booths - Transaction Management</h1>
+        <p>Real-time FinTech Transaction Dashboard</p>
+    </header>
+
+    <main role="main">
+        <section id="transaction-form" aria-labelledby="form-heading">
+            <h2 id="form-heading">New Transaction</h2>
+            <form id="transForm" aria-label="Transaction submission form">
+                <label for="boothSelect">Select Mobile Booth:</label>
+                <select id="boothSelect" required aria-required="true">
+                <option value="">Choose Booth</option>
+                <option value="Wina1">Wina1</option>
+                <option value="Wina2">Wina2</option>
+                <option value="Wina3">Wina3</option>
+                <option value="Wina4">Wina4</option>
+                <option value="Wina5">Wina5</option>
+                <option value="Wina6">Wina6</option>
+            </select>
+            <p id="locationDisplay"></p>
+
+                <label for="serviceSelect">Select Service:</label>
+                <select id="serviceSelect" required disabled aria-required="true">
+                <option value="">Choose Service (after selecting booth)</option>
+            </select>
+            <p id="revenueDisplay"></p>
+                <label for="amountInput">Transaction Amount (Kwacha):</label>
+                <input type="number" id="amountInput" required min="1" step="0.01" aria-required="true" placeholder="Enter amount">
+
+                <button type="submit" aria-label="Submit transaction">Submit Transaction</button>
+            </form>
+            
+            <div id="taxBar" class="tax-section" style="display:none;" role="region" aria-label="Tax calculation display">
+                <h3>Tax Obligations Data Bar</h3>
+                <div class="bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="tax-bar" id="taxBarFill"></div>
+                </div>
+                <p id="taxAmount"></p>
+            </div>
+            
+            <p id="transIdDisplay" role="status" aria-live="polite">Auto-generated Transaction ID: <span id="generatedId"></span></p>
+        </section>
+
+        <section id="dashboard" aria-labelledby="dashboard-heading">
+            <h2 id="dashboard-heading">Dashboard - Real-time Analytics</h2>
+            
+            <div id="cumulatives" class="dashboard-card">
+                <h3>Cumulative Totals & Remaining per Service</h3>
+                <div class="table-wrap">
+                    <table id="cumTable" role="table" aria-label="Service cumulative totals">
+                        <thead>
+                            <tr>
+                                <th scope="col">Service</th>
+                                <th scope="col">Monthly Limit</th>
+                                <th scope="col">Cumulative Total</th>
+                                <th scope="col">Remaining Amount</th>
+                                <th scope="col">Tax Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="boothRevenues" class="dashboard-card">
+                <h3>Cumulative Revenue per Mobile Booth</h3>
+                <div class="table-wrap">
+                    <table id="revenueTable" role="table" aria-label="Booth revenue summary">
+                        <thead>
+                            <tr>
+                                <th scope="col">Booth</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Total Revenue (Kwacha)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="frequencies" class="dashboard-card">
+                <h3>Service Frequency per Mobile Booth</h3>
+                <div class="table-wrap">
+                    <table id="freqTable" role="table" aria-label="Service frequency data">
+                        <thead>
+                            <tr>
+                                <th scope="col">Booth</th>
+                                <th scope="col">Service</th>
+                                <th scope="col">Frequency</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="chartSection" class="dashboard-card" style="max-width: 600px; margin: 40px auto;">
+                <h3>Revenue Overview</h3>
+                <canvas id="revenuepie" role="img" aria-label="Revenue vs Tax pie chart"></canvas>
+            </div>
+        </section>
+    </main>
+    
+    <footer role="contentinfo">
+        <p>&copy; 2021 Wina Bwangu Mobile Booths. All rights reserved.</p>
+    </footer>
+    
+    <script src="wina-bwangu.js"></script>
+</body>
+</html>

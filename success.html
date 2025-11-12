@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Success</title>
+  <link rel="stylesheet" href="login-page.css">
+</head>
+<body>
+  <div class="wrapper" style="text-align:center; padding:2rem;">
+    <h1>Login Successful</h1>
+    <p id="welcome"></p>
+    <a class="btn" href="login-page.html" style="display:inline-block; margin-top:1rem; text-decoration:none;">Back to Login</a>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const user = params.get('user') || 'User';
+    const el = document.getElementById('welcome');
+    if (el) el.textContent = `Welcome, ${user}!`;
+  </script>
+</body>
+</html>
